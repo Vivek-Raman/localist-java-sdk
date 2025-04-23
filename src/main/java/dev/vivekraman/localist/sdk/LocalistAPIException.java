@@ -1,4 +1,4 @@
-package com.localist.sdk;
+package dev.vivekraman.localist.sdk;
 
 import org.springframework.http.HttpStatus;
 

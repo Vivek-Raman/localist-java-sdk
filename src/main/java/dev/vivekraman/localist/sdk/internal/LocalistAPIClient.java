@@ -1,8 +1,5 @@
-package com.localist.sdk.internal;
+package dev.vivekraman.localist.sdk.internal;
 
-import com.localist.sdk.LocalistAPI;
-import com.localist.sdk.LocalistAPIException;
-import com.localist.sdk.model.*;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpHeaders;
@@ -11,6 +8,10 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.ClientResponse;
 import org.springframework.web.reactive.function.client.WebClient;
+
+import dev.vivekraman.localist.sdk.LocalistAPI;
+import dev.vivekraman.localist.sdk.LocalistAPIException;
+import dev.vivekraman.localist.sdk.model.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import java.time.Duration;

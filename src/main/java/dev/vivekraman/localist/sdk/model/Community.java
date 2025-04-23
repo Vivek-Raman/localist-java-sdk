@@ -1,4 +1,4 @@
-package com.localist.sdk.model;
+package dev.vivekraman.localist.sdk.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
@@ -7,9 +7,10 @@ import lombok.Setter;
 @Getter
 @Setter
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Organization {
+public class Community {
   private Long id;
   private String name;
   private String description;
   private String url;
+  private String status;
 }

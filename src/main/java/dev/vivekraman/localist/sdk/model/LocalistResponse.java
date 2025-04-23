@@ -1,4 +1,4 @@
-package com.localist.sdk.model;
+package dev.vivekraman.localist.sdk.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.util.List;
@@ -14,12 +14,12 @@ public class LocalistResponse<T> {
   private List<T> communities;
   private PageInfo page;
 
-    @Getter
-    @Setter
-    @JsonIgnoreProperties(ignoreUnknown = true)
-    public static class PageInfo {
-      private int current;
-      private int size;
-      private int total;
-      }
+  @Getter
+  @Setter
+  @JsonIgnoreProperties(ignoreUnknown = true)
+  public static class PageInfo {
+    private int current;
+    private int size;
+    private int total;
+  }
 }

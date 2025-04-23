@@ -1,4 +1,4 @@
-package com.localist.sdk.model;
+package dev.vivekraman.localist.sdk.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -20,15 +20,15 @@ public class Event {
   private String localistUrl;
   private GeoInfo location;
 
-    @JsonProperty("created_by")
-    private String createdBy;
+  @JsonProperty("created_by")
+  private String createdBy;
 
-    @JsonProperty("updated_by")
-    private String updatedBy;
+  @JsonProperty("updated_by")
+  private String updatedBy;
 
-    @JsonProperty("group_name")
-    private String groupName;
+  @JsonProperty("group_name")
+  private String groupName;
 
-    @JsonProperty("department_name")
-    private String departmentName;
+  @JsonProperty("department_name")
+  private String departmentName;
 }

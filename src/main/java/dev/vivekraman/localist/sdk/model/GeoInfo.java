@@ -1,4 +1,4 @@
-package com.localist.sdk.model;
+package dev.vivekraman.localist.sdk.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
