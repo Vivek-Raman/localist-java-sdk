@@ -9,10 +9,12 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Component;
+import org.springframework.web.reactive.function.client.ClientResponse;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import java.time.Duration;
+import java.util.List;
 import java.util.Optional;
 
 @Component
@@ -48,18 +50,12 @@ public class LocalistAPIClient implements LocalistAPI {
             .queryParam("pp", pageSize)
             .build())
         .retrieve()
-        .onStatus(HttpStatusCode::is4xxClientError, response -> response.bodyToMono(String.class)
-            .map(error -> new LocalistAPIException("Client error: " + error,
-                HttpStatus.valueOf(response.statusCode().value()))))
-        .onStatus(HttpStatusCode::is5xxServerError, response -> response.bodyToMono(String.class)
-            .map(error -> new LocalistAPIException("Server error: " + error,
-                HttpStatus.valueOf(response.statusCode().value()))))
+        .onStatus(HttpStatusCode::is4xxClientError, this::handleClientError)
+        .onStatus(HttpStatusCode::is5xxServerError, this::handleServerError)
         .bodyToMono(new ParameterizedTypeReference<LocalistResponse<Organization>>() {
         })
         .timeout(Duration.ofMillis(properties.getTimeout()))
-        .flatMapMany(response -> Flux.fromIterable(
-            Optional.ofNullable(response.getOrganizations()).orElseThrow(
-                () -> new LocalistAPIException("No organizations found in response", HttpStatus.NOT_FOUND))));
+        .flatMapMany(response -> extractList(response.getOrganizations(), "No organizations found in response"));
   }
 
   @Override
@@ -67,12 +63,8 @@ public class LocalistAPIClient implements LocalistAPI {
     return webClient.get()
         .uri("/organizations/{id}", organizationId)
         .retrieve()
-        .onStatus(HttpStatusCode::is4xxClientError, response -> response.bodyToMono(String.class)
-            .map(error -> new LocalistAPIException("Client error: " + error,
-                HttpStatus.valueOf(response.statusCode().value()))))
-        .onStatus(HttpStatusCode::is5xxServerError, response -> response.bodyToMono(String.class)
-            .map(error -> new LocalistAPIException("Server error: " + error,
-                HttpStatus.valueOf(response.statusCode().value()))))
+        .onStatus(HttpStatusCode::is4xxClientError, this::handleClientError)
+        .onStatus(HttpStatusCode::is5xxServerError, this::handleServerError)
         .bodyToMono(Organization.class)
         .timeout(Duration.ofMillis(properties.getTimeout()));
   }
@@ -91,18 +83,12 @@ public class LocalistAPIClient implements LocalistAPI {
             .queryParam("pp", pageSize)
             .build())
         .retrieve()
-        .onStatus(HttpStatusCode::is4xxClientError, response -> response.bodyToMono(String.class)
-            .map(error -> new LocalistAPIException("Client error: " + error,
-                HttpStatus.valueOf(response.statusCode().value()))))
-        .onStatus(HttpStatusCode::is5xxServerError, response -> response.bodyToMono(String.class)
-            .map(error -> new LocalistAPIException("Server error: " + error,
-                HttpStatus.valueOf(response.statusCode().value()))))
+        .onStatus(HttpStatusCode::is4xxClientError, this::handleClientError)
+        .onStatus(HttpStatusCode::is5xxServerError, this::handleServerError)
         .bodyToMono(new ParameterizedTypeReference<LocalistResponse<Event>>() {
         })
         .timeout(Duration.ofMillis(properties.getTimeout()))
-        .flatMapMany(response -> Flux.fromIterable(
-            Optional.ofNullable(response.getEvents())
-                .orElseThrow(() -> new LocalistAPIException("No events found in response", HttpStatus.NOT_FOUND))));
+        .flatMapMany(response -> extractList(response.getEvents(), "No events found in response"));
   }
 
   @Override
@@ -110,12 +96,8 @@ public class LocalistAPIClient implements LocalistAPI {
     return webClient.get()
         .uri("/events/{id}", eventId)
         .retrieve()
-        .onStatus(HttpStatusCode::is4xxClientError, response -> response.bodyToMono(String.class)
-            .map(error -> new LocalistAPIException("Client error: " + error,
-                HttpStatus.valueOf(response.statusCode().value()))))
-        .onStatus(HttpStatusCode::is5xxServerError, response -> response.bodyToMono(String.class)
-            .map(error -> new LocalistAPIException("Server error: " + error,
-                HttpStatus.valueOf(response.statusCode().value()))))
+        .onStatus(HttpStatusCode::is4xxClientError, this::handleClientError)
+        .onStatus(HttpStatusCode::is5xxServerError, this::handleServerError)
         .bodyToMono(Event.class)
         .timeout(Duration.ofMillis(properties.getTimeout()));
   }
@@ -134,18 +116,12 @@ public class LocalistAPIClient implements LocalistAPI {
             .queryParam("pp", pageSize)
             .build(organizationId))
         .retrieve()
-        .onStatus(HttpStatusCode::is4xxClientError, response -> response.bodyToMono(String.class)
-            .map(error -> new LocalistAPIException("Client error: " + error,
-                HttpStatus.valueOf(response.statusCode().value()))))
-        .onStatus(HttpStatusCode::is5xxServerError, response -> response.bodyToMono(String.class)
-            .map(error -> new LocalistAPIException("Server error: " + error,
-                HttpStatus.valueOf(response.statusCode().value()))))
+        .onStatus(HttpStatusCode::is4xxClientError, this::handleClientError)
+        .onStatus(HttpStatusCode::is5xxServerError, this::handleServerError)
         .bodyToMono(new ParameterizedTypeReference<LocalistResponse<Community>>() {
         })
         .timeout(Duration.ofMillis(properties.getTimeout()))
-        .flatMapMany(response -> Flux.fromIterable(
-            Optional.ofNullable(response.getCommunities()).orElseThrow(
-                () -> new LocalistAPIException("No communities found in response", HttpStatus.NOT_FOUND))));
+        .flatMapMany(response -> extractList(response.getCommunities(), "No communities found in response"));
   }
 
   @Override
@@ -153,12 +129,8 @@ public class LocalistAPIClient implements LocalistAPI {
     return webClient.get()
         .uri("/communities/{id}", communityId)
         .retrieve()
-        .onStatus(HttpStatusCode::is4xxClientError, response -> response.bodyToMono(String.class)
-            .map(error -> new LocalistAPIException("Client error: " + error,
-                HttpStatus.valueOf(response.statusCode().value()))))
-        .onStatus(HttpStatusCode::is5xxServerError, response -> response.bodyToMono(String.class)
-            .map(error -> new LocalistAPIException("Server error: " + error,
-                HttpStatus.valueOf(response.statusCode().value()))))
+        .onStatus(HttpStatusCode::is4xxClientError, this::handleClientError)
+        .onStatus(HttpStatusCode::is5xxServerError, this::handleServerError)
         .bodyToMono(Community.class)
         .timeout(Duration.ofMillis(properties.getTimeout()));
   }
@@ -168,5 +140,25 @@ public class LocalistAPIClient implements LocalistAPI {
       return properties.getDefaultPageSize();
     }
     return Math.min(pageSize, properties.getMaxPageSize());
+  }
+
+  private <T> Flux<T> extractList(List<T> items, String notFoundMessage) {
+    return Flux.fromIterable(
+        Optional.ofNullable(items)
+            .orElseThrow(() -> new LocalistAPIException(notFoundMessage, HttpStatus.NOT_FOUND)));
+  }
+
+  private Mono<? extends Throwable> handleClientError(ClientResponse response) {
+    return response.bodyToMono(String.class)
+        .map(error -> new LocalistAPIException(
+            "Client error: " + error,
+            HttpStatus.valueOf(response.statusCode().value())));
+  }
+
+  private Mono<? extends Throwable> handleServerError(ClientResponse response) {
+    return response.bodyToMono(String.class)
+        .map(error -> new LocalistAPIException(
+            "Server error: " + error,
+            HttpStatus.valueOf(response.statusCode().value())));
   }
 }
