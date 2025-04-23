@@ -1,0 +1,45 @@
+{
+  "groups": [
+    {
+      "name": "localist.api",
+      "type": "com.localist.sdk.internal.LocalistProperties",
+      "sourceType": "com.localist.sdk.internal.LocalistProperties"
+    }
+  ],
+  "properties": [
+    {
+      "name": "localist.api.base-url",
+      "type": "java.lang.String",
+      "description": "Base URL for the Localist calendar instance.",
+      "sourceType": "com.localist.sdk.internal.LocalistProperties"
+    },
+    {
+      "name": "localist.api.access-token",
+      "type": "java.lang.String",
+      "description": "Optional access token for authenticated requests.",
+      "sourceType": "com.localist.sdk.internal.LocalistProperties"
+    },
+    {
+      "name": "localist.api.default-page-size",
+      "type": "java.lang.Integer",
+      "description": "Default number of items per page for paginated responses.",
+      "sourceType": "com.localist.sdk.internal.LocalistProperties",
+      "defaultValue": 10
+    },
+    {
+      "name": "localist.api.max-page-size",
+      "type": "java.lang.Integer",
+      "description": "Maximum allowed number of items per page.",
+      "sourceType": "com.localist.sdk.internal.LocalistProperties",
+      "defaultValue": 100
+    },
+    {
+      "name": "localist.api.timeout",
+      "type": "java.lang.Long",
+      "description": "API request timeout in milliseconds.",
+      "sourceType": "com.localist.sdk.internal.LocalistProperties",
+      "defaultValue": 30000
+    }
+  ],
+  "hints": []
+}
