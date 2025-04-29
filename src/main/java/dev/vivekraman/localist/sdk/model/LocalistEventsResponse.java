@@ -8,11 +8,16 @@ import lombok.Setter;
 @Getter
 @Setter
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class LocalistResponse<T> {
-  private List<T> events;
-  private List<T> organizations;
-  private List<T> communities;
+public class LocalistEventsResponse {
+  private List<EventHolder> events;
   private PageInfo page;
+
+  @Getter
+  @Setter
+  @JsonIgnoreProperties(ignoreUnknown = true)
+  public static class EventHolder {
+    private Event event;
+  }
 
   @Getter
   @Setter
